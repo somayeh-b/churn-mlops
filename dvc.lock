@@ -1,0 +1,90 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+    - path: data/raw/churn.csv
+      hash: md5
+      md5: f42cdb85919860b14597856e793a8e61
+      size: 979846
+    - path: src/prepare.py
+      hash: md5
+      md5: 15daf6966e3c4e7c02000eaf307af0cd
+      size: 2383
+    params:
+      params.yaml:
+        prepare.random_state: 42
+        prepare.test_size: 0.2
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 49a5f69372cf4cbe3a302a10f140feea
+      size: 72634
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 86e163304084bcced4af330601eb72a0
+      size: 289359
+    - path: models/label_encoders.pkl
+      hash: md5
+      md5: e03d13afe3b5f9680d6843755866c04a
+      size: 4067
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 49a5f69372cf4cbe3a302a10f140feea
+      size: 72634
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 86e163304084bcced4af330601eb72a0
+      size: 289359
+    - path: src/train.py
+      hash: md5
+      md5: 36d36e331e8255448e553ee5f297932d
+      size: 3874
+    params:
+      params.yaml:
+        train.model: gradient_boosting
+        train.model_params:
+          learning_rate: 0.05
+          max_depth: 3
+          n_estimators: 150
+        train.random_state: 42
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 36c8144344a39192a54ec6abe60ba673
+      size: 208536
+    - path: reports/metrics.json
+      hash: md5
+      md5: 66e40ee4cdf6ebad47bb07f08cdcac5d
+      size: 206
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 49a5f69372cf4cbe3a302a10f140feea
+      size: 72634
+    - path: models/model.pkl
+      hash: md5
+      md5: 36c8144344a39192a54ec6abe60ba673
+      size: 208536
+    - path: src/evaluate.py
+      hash: md5
+      md5: 33c0bb72fac8bdeba01c75bb3f8265ce
+      size: 2313
+    outs:
+    - path: reports/evaluation.json
+      hash: md5
+      md5: 9c00b26a83d9cce9afe5342ac268cd15
+      size: 1086
+    - path: reports/reference_data.csv
+      hash: md5
+      md5: 49a5f69372cf4cbe3a302a10f140feea
+      size: 72634
+    - path: reports/reference_stats.json
+      hash: md5
+      md5: ee159f2913f7c659fd25fe92a587bd48
+      size: 3789
