@@ -1,0 +1,7 @@
+{
+  "drift_share": 0.15789473684210525,
+  "threshold": 0.15,
+  "retrain_recommended": true,
+  "n_reference_rows": 1409,
+  "n_current_rows": 1500
+}

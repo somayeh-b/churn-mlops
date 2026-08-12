@@ -1,0 +1,43 @@
+stages:
+  prepare:
+    cmd: python src/prepare.py
+    deps:
+      - src/prepare.py
+      - data/raw/churn.csv
+    params:
+      - prepare.test_size
+      - prepare.random_state
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+      - models/label_encoders.pkl
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - data/processed/train.csv
+      - data/processed/test.csv
+    params:
+      - train.model
+      - train.model_params
+      - train.random_state
+    outs:
+      - models/model.pkl
+    metrics:
+      - reports/metrics.json:
+          cache: false
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - models/model.pkl
+      - data/processed/test.csv
+    outs:
+      - reports/evaluation.json:
+          cache: false
+      - reports/reference_stats.json:
+          cache: false
+      - reports/reference_data.csv:
+          cache: false

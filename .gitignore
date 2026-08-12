@@ -1,0 +1,27 @@
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+.env
+mlruns/
+mlflow.db
+mlflow.db-*
+.ipynb_checkpoints/
+docs/*.png.bak
+docs/proposal_preview_*.png
+docs/slide-*.jpg
+docs/Phase2_Presentation.pdf
+.DS_Store
+*.egg-info/
+
+# retrain.py's rollback backups — local safety copies only, never shipped
+models/model_backup_*.pkl
+
+# DVC cache must never be committed — it's local/remote storage, not source.
+# (DVC-tracked data/model files themselves are excluded via the .gitignore
+# files DVC auto-generates inside data/raw/, data/processed/, and models/ —
+# only the small *.dvc pointer files are tracked in git for those.)
+.dvc/cache/
+.dvc/tmp/

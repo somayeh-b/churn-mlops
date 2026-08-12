@@ -1,0 +1,11 @@
+prepare:
+  random_state: 42
+  test_size: 0.2
+train:
+  model: gradient_boosting
+  model_params:
+    learning_rate: 0.05
+    max_depth: 3
+    n_estimators: 150
+  random_state: 42
+  run_name: production_gradient_boosting
